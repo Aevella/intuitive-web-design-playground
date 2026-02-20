@@ -41,6 +41,5 @@ const Component = memo(({ focused, onFocus }) => {
   );
 });
 
-// NEW: Tooltip
 
 export default Component;

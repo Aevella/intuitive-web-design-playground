@@ -9,7 +9,7 @@ const Component = memo(({ focused, onFocus }) => {
   const { lum } = useContext(BgContext);
   const accent = lum > 0.5 ? "rgba(30,100,200,0.7)" : "rgba(100,180,255,0.7)";
   const fg = lumToFg(lum);
-  const css = `height: ${p.height}px;\nborder-radius: ${p.radius}px;\ntransition: width ${p.speed}s cubic-bezier(0.16, 1, 0.3, 1);\nbox-shadow: 0 0 ${p.glow}px (accent);`;
+  const css = `height: ${p.height}px;\nborder-radius: ${p.radius}px;\ntransition: width ${p.speed}s cubic-bezier(0.16, 1, 0.3, 1);\nbox-shadow: 0 0 ${p.glow}px ${accent};`;
   return (
     <ElementCard title="进度条" subtitle="Progress Bar" focused={focused} onFocus={onFocus} layout="split"
       copyData={{ css, short: `${p.height}px · r:${p.radius} · ${p.speed}s` }}>
@@ -33,6 +33,5 @@ const Component = memo(({ focused, onFocus }) => {
   );
 });
 
-// NEW: Spinner
 
 export default Component;

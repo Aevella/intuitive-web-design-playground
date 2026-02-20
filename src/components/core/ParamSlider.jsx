@@ -87,8 +87,8 @@ function ParamSlider({
           step={step}
           value={value}
           onChange={handleChange}
-          onPointerDown={setDragOn}
-          onPointerUp={setDragOff}
+          onPointerDown={(e) => { e.stopPropagation(); setDragOn(); }}
+          onPointerUp={(e) => { e.stopPropagation(); setDragOff(); }}
           onPointerCancel={setDragOff}
           onTouchStart={setDragOn}
           onTouchEnd={setDragOff}

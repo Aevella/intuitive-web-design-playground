@@ -1,16 +1,45 @@
-# React + Vite
+# Nudge — Design Parameter Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A tactile UI parameter playground for testing **real, copyable CSS** across four categories:
 
-Currently, two official plugins are available:
+- Static
+- Interactive
+- Alive
+- Notify
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Core interaction: click an element card, adjust sliders, then copy CSS from the card footer.
 
-## React Compiler
+## Why this exists
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Nudge is not a component gallery. It is a perception trainer for micro-interaction quality: spacing, timing, motion, glow, density, and environmental texture.
 
-## Expanding the ESLint configuration
+## Run
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+## Project map
+
+- `src/components/core` — shared cards/slider/copy behavior
+- `src/components/elements` — category element modules
+- `src/context` — background + luminance context
+- `src/data/registry.js` — element registry
+- `src/utils` — color/utility helpers
+- `public/sw.js` + `manifest.webmanifest` — PWA shell
+
+## Guardrails
+
+Single source of truth: `GUARDRAILS.md`
+
+## Notes for reviewers
+
+- Exported CSS is intended to be 1:1 usable.
+- Visual feel still depends on viewport/background/context (documented in guardrails).

@@ -49,7 +49,7 @@ function ElementCard({ title, subtitle, children, controls, copyData, focused, o
           {previewContent}
           {copyData && <CopyBadge css={copyData.css} short={copyData.short} />}
         </div>
-        <div style={useSplit ? { width: UI_TOKENS.split.controlWidth, flexShrink: 0 } : undefined}>{controlContent}</div>
+        <div onClick={(e) => e.stopPropagation()} style={useSplit ? { width: UI_TOKENS.split.controlWidth, flexShrink: 0 } : undefined}>{controlContent}</div>
       </div>
     </div>
   );

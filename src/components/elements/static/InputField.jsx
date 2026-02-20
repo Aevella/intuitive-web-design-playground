@@ -10,7 +10,8 @@ const Component = memo(({ focused, onFocus }) => {
   const { lum } = useContext(BgContext);
   const fg = lumToFg(lum);
   const accent = lum > 0.5 ? "rgba(40,100,200,0.7)" : "rgba(100,160,255,0.7)";
-  const css = `border-radius: ${p.radius}px;\nborder: ${p.borderW}px solid;\npadding: ${p.padY}px ${p.padX}px;\nfont-size: ${p.size}px;\nbox-shadow: 0 0 ${p.focusGlow}px (accent) /* on focus */;`;
+  const focusGlowColor = accent.replace(/[\d.]+\)$/, "0.3)");
+  const css = `border-radius: ${p.radius}px;\nborder: ${p.borderW}px solid ${fg}0.15);\npadding: ${p.padY}px ${p.padX}px;\nfont-size: ${p.size}px;\ncolor: ${fg}0.7);\n&::placeholder { color: ${fg}${p.placeholderOp.toFixed(2)}); }\n&:focus { border-color: ${accent}; box-shadow: 0 0 ${p.focusGlow}px ${focusGlowColor}; }`;
   return (
     <ElementCard title="输入框" subtitle="Input Field" focused={focused} onFocus={onFocus} layout="split"
       copyData={{ css, short: `r:${p.radius} · focus-glow:${p.focusGlow} · ${p.size}px` }}>
@@ -28,7 +29,7 @@ const Component = memo(({ focused, onFocus }) => {
             padding: `${p.padY}px ${p.padX}px`,
             fontSize: p.size, fontFamily: "'IBM Plex Mono', monospace",
             outline: "none",
-            boxShadow: isFocused ? `0 0 ${p.focusGlow}px ${accent.replace(/[\d.]+\)$/, "0.3)")}` : "none",
+            boxShadow: isFocused ? `0 0 ${p.focusGlow}px ${focusGlowColor}` : "none",
             transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         />
@@ -47,6 +48,5 @@ const Component = memo(({ focused, onFocus }) => {
   );
 });
 
-// NEW: Divider
 
 export default Component;

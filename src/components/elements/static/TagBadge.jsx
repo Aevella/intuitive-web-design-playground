@@ -33,6 +33,5 @@ const Component = memo(({ focused, onFocus }) => {
   );
 });
 
-// NEW: Input Field
 
 export default Component;

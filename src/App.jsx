@@ -134,7 +134,6 @@ export default function DesignPlayground() {
         transition: "background 0.4s ease",
         position: "relative", overflow: "hidden",
       }}>
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 1, ...textureOverlay }} />
         <div style={{ padding: "40px 32px 0", maxWidth: 840, margin: "0 auto" }}>
           <div style={{ marginBottom: 8 }}>
