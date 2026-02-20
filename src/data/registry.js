@@ -4,11 +4,13 @@ import TagBadge from "../components/elements/static/TagBadge";
 import InputField from "../components/elements/static/InputField";
 import Divider from "../components/elements/static/Divider";
 import SkeletonBlock from "../components/elements/static/SkeletonBlock";
+import TypographyScale from "../components/elements/static/TypographyScale";
 
 import ToastNotify from "../components/elements/notify/ToastNotify";
 import PulseIndicator from "../components/elements/notify/PulseIndicator";
 import ProgressBarEl from "../components/elements/notify/ProgressBarEl";
 import SpinnerEl from "../components/elements/notify/SpinnerEl";
+import BadgeCount from "../components/elements/notify/BadgeCount";
 
 import HoverButton from "../components/elements/interactive/HoverButton";
 import RippleButton from "../components/elements/interactive/RippleButton";
@@ -21,6 +23,7 @@ import ColorRelation from "../components/elements/alive/ColorRelation";
 import SpacingBreath from "../components/elements/alive/SpacingBreath";
 import ShadowDepth from "../components/elements/alive/ShadowDepth";
 import StaggerFlow from "../components/elements/alive/StaggerFlow";
+import OpacityLayers from "../components/elements/alive/OpacityLayers";
 
 export const registry = {
   static: [
@@ -30,12 +33,14 @@ export const registry = {
     { id: "input-field", component: InputField, key: "if" },
     { id: "divider", component: Divider, key: "dv" },
     { id: "skeleton", component: SkeletonBlock, key: "sk" },
+    { id: "typography", component: TypographyScale, key: "ty" },
   ],
   notify: [
     { id: "toast", component: ToastNotify, key: "tn" },
     { id: "pulse", component: PulseIndicator, key: "pi" },
     { id: "progress", component: ProgressBarEl, key: "pb" },
     { id: "spinner", component: SpinnerEl, key: "sp" },
+    { id: "badge-count", component: BadgeCount, key: "bc" },
   ],
   interactive: [
     { id: "hover", component: HoverButton, key: "hb" },
@@ -50,5 +55,6 @@ export const registry = {
     { id: "spacing", component: SpacingBreath, key: "sb" },
     { id: "shadow-depth", component: ShadowDepth, key: "sd" },
     { id: "stagger", component: StaggerFlow, key: "sf" },
+    { id: "opacity", component: OpacityLayers, key: "ol" },
   ],
 };

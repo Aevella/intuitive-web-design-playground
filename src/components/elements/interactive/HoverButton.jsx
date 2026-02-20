@@ -17,7 +17,14 @@ const Component = memo(({ focused, onFocus }) => {
       <button
         onMouseEnter={() => { if (!locked) setHovered(true); }}
         onMouseLeave={() => { if (!locked) setHovered(false); }}
-        onClick={(e) => { e.stopPropagation(); setLocked(s => !s); }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setLocked((s) => {
+            const next = !s;
+            if (!next) setHovered(false);
+            return next;
+          });
+        }}
         style={{
         background: accent.replace(/[\d.]+\)$/, "0.08)"), color: accent,
         border: `1px solid ${accent.replace(/[\d.]+\)$/, active ? "0.4)" : "0.15)")}`,

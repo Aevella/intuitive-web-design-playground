@@ -53,7 +53,7 @@ const Component = memo(({ focused, onFocus }) => {
       subtitle="Shadow Depth / Elevation"
       focused={focused}
       onFocus={onFocus}
-      copyData={{ css, short: `lift:${p.lift} · angle:${p.angle}° · blur:${Math.round(p.farBlur)}` }}
+      copyData={{ css, short: `lift:${p.lift} · angle:${p.angle}° · far-blur:${Math.round(p.farBlur)}` }}
     >
       <div style={{ width: "100%", maxWidth: 240, display: "grid", placeItems: "center", minHeight: 160 }}>
         <div

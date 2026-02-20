@@ -1,6 +1,7 @@
 import { memo, useContext, useMemo, useState } from "react";
 import { BgContext } from "../../../context/BgContext";
 import { lumToFg } from "../../../utils/color";
+import { monoFont, optionChipStyle } from "../../../utils/stylePresets";
 import ElementCard from "../../core/ElementCard";
 import ParamSlider from "../../core/ParamSlider";
 
@@ -34,7 +35,7 @@ const Component = memo(({ focused, onFocus }) => {
 
   const offsets = DIR_OFFSET[p.direction];
 
-  const cells = useMemo(() => Array.from({ length: p.count }), [p.count, tick]);
+  const cells = useMemo(() => Array.from({ length: p.count }), [p.count]);
 
   return (
     <ElementCard
@@ -42,7 +43,7 @@ const Component = memo(({ focused, onFocus }) => {
       subtitle="Stagger / Sequence"
       focused={focused}
       onFocus={onFocus}
-      copyData={{ css, short: `${p.count} · ${p.delay}ms · ${p.motion}` }}
+      copyData={{ css, short: `count:${p.count} · delay:${p.delay}ms · motion:${p.motion}` }}
     >
       <div style={{ width: "100%", maxWidth: 240 }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
@@ -58,13 +59,13 @@ const Component = memo(({ focused, onFocus }) => {
               borderRadius: 8,
               padding: "6px 10px",
               fontSize: 10,
-              fontFamily: "'IBM Plex Mono', monospace",
+              fontFamily: monoFont,
               cursor: "pointer",
             }}
           >
             replay
           </button>
-          <span style={{ fontSize: 10, color: `${fg}0.3)`, fontFamily: "'IBM Plex Mono', monospace" }}>{p.direction} · {p.motion}</span>
+          <span style={{ fontSize: 10, color: `${fg}0.3)`, fontFamily: monoFont }}>{p.direction} · {p.motion}</span>
         </div>
         <div style={{
           display: "grid",
@@ -107,16 +108,7 @@ const Component = memo(({ focused, onFocus }) => {
             <button
               key={d.id}
               onClick={() => setP((s) => ({ ...s, direction: d.id }))}
-              style={{
-                border: `1px solid ${fg}${p.direction === d.id ? "0.22)" : "0.10)"}`,
-                background: p.direction === d.id ? `${fg}0.1)` : "transparent",
-                color: `${fg}${p.direction === d.id ? "0.75)" : "0.35)"}`,
-                borderRadius: 7,
-                padding: "6px 8px",
-                fontSize: 10,
-                fontFamily: "'IBM Plex Mono', monospace",
-                cursor: "pointer",
-              }}
+              style={optionChipStyle({ fg, active: p.direction === d.id })}
             >
               {d.label}
             </button>
@@ -127,16 +119,7 @@ const Component = memo(({ focused, onFocus }) => {
             <button
               key={m.id}
               onClick={() => setP((s) => ({ ...s, motion: m.id }))}
-              style={{
-                border: `1px solid ${fg}${p.motion === m.id ? "0.22)" : "0.10)"}`,
-                background: p.motion === m.id ? `${fg}0.1)` : "transparent",
-                color: `${fg}${p.motion === m.id ? "0.75)" : "0.35)"}`,
-                borderRadius: 7,
-                padding: "6px 8px",
-                fontSize: 10,
-                fontFamily: "'IBM Plex Mono', monospace",
-                cursor: "pointer",
-              }}
+              style={optionChipStyle({ fg, active: p.motion === m.id })}
             >
               {m.label}
             </button>

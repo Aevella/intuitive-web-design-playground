@@ -1,6 +1,7 @@
 import { memo, useContext, useEffect, useMemo, useState } from "react";
 import { BgContext } from "../../../context/BgContext";
 import { lumToFg } from "../../../utils/color";
+import { optionChipStyle } from "../../../utils/stylePresets";
 import ElementCard from "../../core/ElementCard";
 import ParamSlider from "../../core/ParamSlider";
 
@@ -65,7 +66,7 @@ const Component = memo(({ focused, onFocus }) => {
       focused={focused}
       onFocus={onFocus}
       layout="split"
-      copyData={{ css, short: `rows:${p.rows} · speed:${p.speed.toFixed(1)} · ${p.direction === "x" ? "L→R" : "T→B"}` }}
+      copyData={{ css, short: `rows:${p.rows} · speed:${p.speed.toFixed(1)} · dir:${p.direction === "x" ? "x" : "y"}` }}
     >
       <div
         style={{
@@ -108,16 +109,7 @@ const Component = memo(({ focused, onFocus }) => {
             <button
               key={d.id}
               onClick={() => setP((s) => ({ ...s, direction: d.id }))}
-              style={{
-                border: `1px solid ${fg}${p.direction === d.id ? "0.22)" : "0.10)"}`,
-                background: p.direction === d.id ? `${fg}0.10)` : "transparent",
-                color: `${fg}${p.direction === d.id ? "0.75)" : "0.35)"}`,
-                borderRadius: 7,
-                padding: "6px 10px",
-                fontSize: 10,
-                fontFamily: "'IBM Plex Mono', monospace",
-                cursor: "pointer",
-              }}
+              style={optionChipStyle({ fg, active: p.direction === d.id, pad: "6px 10px" })}
             >
               波纹方向 {d.label}
             </button>
