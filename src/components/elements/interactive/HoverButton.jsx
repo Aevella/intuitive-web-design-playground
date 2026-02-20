@@ -10,7 +10,8 @@ const Component = memo(({ focused, onFocus }) => {
   const { lum } = useContext(BgContext);
   const accent = lum > 0.5 ? "rgba(100,60,180,0.7)" : "rgba(200,160,255,0.7)";
   const active = hovered || locked;
-  const css = `transform: scale(${p.scale}) translateY(-${p.lift}px); /* on hover/tap */\nbox-shadow: 0 ${p.lift * 2}px ${p.glowOn}px (accent/0.2);\ntransition: all ${p.speed}s cubic-bezier(0.16, 1, 0.3, 1);\nborder-radius: ${p.radius}px;`;
+  const glowColor = accent.replace(/[\d.]+\)$/, "0.2)");
+  const css = `transform: scale(${p.scale}) translateY(-${p.lift}px); /* on hover/tap */\nbox-shadow: 0 ${p.lift * 2}px ${p.glowOn}px ${glowColor};\ntransition: all ${p.speed}s cubic-bezier(0.16, 1, 0.3, 1);\nborder-radius: ${p.radius}px;`;
   return (
     <ElementCard title="悬停反馈" subtitle="Hover Effect" focused={focused} onFocus={onFocus}
       copyData={{ css, short: `×${p.scale} · ↑${p.lift}px · ${p.speed}s` }}>
@@ -31,7 +32,7 @@ const Component = memo(({ focused, onFocus }) => {
         borderRadius: p.radius, padding: "10px 24px",
         fontSize: 13, fontFamily: "'IBM Plex Mono', monospace", cursor: "pointer",
         transform: active ? `scale(${p.scale}) translateY(-${p.lift}px)` : "scale(1) translateY(0)",
-        boxShadow: active ? `0 ${p.lift * 2}px ${p.glowOn}px ${accent.replace(/[\d.]+\)$/, "0.2)")}` : "none",
+        boxShadow: active ? `0 ${p.lift * 2}px ${p.glowOn}px ${glowColor}` : "none",
         transition: `all ${p.speed}s cubic-bezier(0.16, 1, 0.3, 1)`,
       }}>{locked ? "hover locked" : "hover me"}</button>
       <div>

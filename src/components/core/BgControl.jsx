@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { hexToLum, hslToHex } from "../../utils/color";
+import { hexToHsl, hexToLum, hslToHex } from "../../utils/color";
 
 const TEXTURE_PRESETS = {
   clean: { noise: 0, bloom: 0.06, specular: 0.08 },
@@ -9,22 +9,10 @@ const TEXTURE_PRESETS = {
   neon: { noise: 0.06, bloom: 0.42, specular: 0.3 },
 };
 
-export default function BgControl({ bgHex, onChange, texture, onTextureChange }) {
+export default function BgControl({ bgHex, onChange, texture, onTextureChange, lastCustomTexture }) {
   const lum = hexToLum(bgHex);
   const [expanded, setExpanded] = useState(false);
-  const r = parseInt(bgHex.slice(1, 3), 16) / 255;
-  const g = parseInt(bgHex.slice(3, 5), 16) / 255;
-  const b = parseInt(bgHex.slice(5, 7), 16) / 255;
-  const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
-  const l = (mx + mn) / 2;
-  let h = 0, s = 0;
-  if (mx !== mn) {
-    const d = mx - mn;
-    s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
-    if (mx === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-    else if (mx === g) h = ((b - r) / d + 2) / 6;
-    else h = ((r - g) / d + 4) / 6;
-  }
+  const { h, s, l } = hexToHsl(bgHex);
 
   return (
     <div style={{
@@ -105,8 +93,16 @@ export default function BgControl({ bgHex, onChange, texture, onTextureChange })
                 { id: "glass", label: "玻璃" },
                 { id: "grain", label: "颗粒" },
                 { id: "neon", label: "霓虹" },
+                { id: "custom", label: "自定" },
               ].map((t) => (
-                <button key={t.id} onClick={(e) => { e.stopPropagation(); onTextureChange({ preset: t.id, ...TEXTURE_PRESETS[t.id] }); }} style={{
+                <button key={t.id} onClick={(e) => {
+                  e.stopPropagation();
+                  if (t.id === "custom") {
+                    onTextureChange({ preset: "custom", ...(lastCustomTexture || texture) });
+                    return;
+                  }
+                  onTextureChange({ preset: t.id, ...TEXTURE_PRESETS[t.id] });
+                }} style={{
                   border: `1px solid ${texture.preset === t.id ? "rgba(255,255,255,0.28)" : "rgba(255,255,255,0.12)"}`,
                   background: texture.preset === t.id ? "rgba(255,255,255,0.12)" : "transparent",
                   color: texture.preset === t.id ? "rgba(255,255,255,0.82)" : "rgba(255,255,255,0.45)",

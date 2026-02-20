@@ -36,6 +36,7 @@ const Component = memo(({ focused, onFocus }) => {
   const offsets = DIR_OFFSET[p.direction];
 
   const cells = useMemo(() => Array.from({ length: p.count }), [p.count]);
+  const keyframeName = `stagger-in-${tick}`;
 
   return (
     <ElementCard
@@ -86,14 +87,14 @@ const Component = memo(({ focused, onFocus }) => {
                 background: `${fg}0.09)`,
                 opacity: 0,
                 transform: `translate(${offsets.x || 0}px, ${offsets.y || 0}px) scale(${offsets.scale || 1})`,
-                animation: `stagger-in ${p.duration}ms ${MOTIONS[p.motion]} forwards`,
+                animation: `${keyframeName} ${p.duration}ms ${MOTIONS[p.motion]} forwards`,
                 animationDelay: `${i * p.delay}ms`,
               }}
             />
           ))}
         </div>
         <style>{`
-          @keyframes stagger-in {
+          @keyframes ${keyframeName} {
             from { opacity: 0; }
             to { opacity: 1; transform: translate(0,0) scale(1); }
           }

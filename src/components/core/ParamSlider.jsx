@@ -1,9 +1,9 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { BgContext } from "../../context/BgContext";
-import { lumToFg } from "../../utils/color";
+import { createFg } from "../../utils/color";
 import { UI_TOKENS } from "../../utils/uiTokens";
 
-export default function ParamSlider({
+function ParamSlider({
   label,
   value,
   min,
@@ -17,7 +17,7 @@ export default function ParamSlider({
   const range = max - min;
   const pct = range > 0 ? ((value - min) / range) * 100 : 0;
   const { lum } = useContext(BgContext);
-  const fg = lumToFg(lum);
+  const fg = createFg(lum);
   const [dragging, setDragging] = useState(false);
   const rafRef = useRef(0);
   const nextValueRef = useRef(value);
@@ -68,17 +68,17 @@ export default function ParamSlider({
   return (
     <div style={{ marginBottom: 10 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-        <span style={{ fontSize: 11, color: `${fg}0.35)`, fontFamily: "'IBM Plex Mono', monospace", letterSpacing: "0.03em" }}>{label}</span>
+        <span style={{ fontSize: 11, color: fg(0.35), fontFamily: "'IBM Plex Mono', monospace", letterSpacing: "0.03em" }}>{label}</span>
         <span style={{ fontSize: 11, color: accent, fontFamily: "'IBM Plex Mono', monospace", fontWeight: 500 }}>
           {formattedValue}{unit}
         </span>
       </div>
       <div style={{ position: "relative", height: UI_TOKENS.slider.hitHeight, display: "flex", alignItems: "center", touchAction: "pan-x" }}>
-        <div style={{ position: "absolute", left: 0, right: 0, top: UI_TOKENS.slider.trackTop, height: 2, background: `${fg}0.08)`, borderRadius: 1 }} />
+        <div style={{ position: "absolute", left: 0, right: 0, top: UI_TOKENS.slider.trackTop, height: 2, background: fg(0.08), borderRadius: 1 }} />
         <div style={{ position: "absolute", left: 0, top: UI_TOKENS.slider.trackTop, width: `${pct}%`, height: 2, background: accent, borderRadius: 1 }} />
         {snaps.map((s, i) => {
           const sp = ((s - min) / (max - min)) * 100;
-          return <div key={i} style={{ position: "absolute", left: `${sp}%`, top: UI_TOKENS.slider.trackTop - 2, width: 3, height: 6, background: `${fg}0.1)`, borderRadius: 1, transform: "translateX(-50%)", pointerEvents: "none" }} />;
+          return <div key={i} style={{ position: "absolute", left: `${sp}%`, top: UI_TOKENS.slider.trackTop - 2, width: 3, height: 6, background: fg(0.1), borderRadius: 1, transform: "translateX(-50%)", pointerEvents: "none" }} />;
         })}
         <input
           type="range"
@@ -113,3 +113,5 @@ export default function ParamSlider({
     </div>
   );
 }
+
+export default memo(ParamSlider);

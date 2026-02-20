@@ -1,4 +1,4 @@
-const CACHE_NAME = "nudge-v2";
+const CACHE_NAME = "nudge-v3";
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
@@ -6,6 +6,16 @@ const APP_SHELL = [
   "/icon-512.png",
   "/apple-touch-icon.png",
 ];
+const MAX_DYNAMIC_ENTRIES = 80;
+
+async function trimDynamicEntries(cache) {
+  const keys = await cache.keys();
+  const dynamic = keys.filter((req) => !APP_SHELL.includes(new URL(req.url).pathname));
+  const overflow = dynamic.length - MAX_DYNAMIC_ENTRIES;
+  if (overflow > 0) {
+    await Promise.all(dynamic.slice(0, overflow).map((req) => cache.delete(req)));
+  }
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
@@ -13,12 +23,13 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)));
+    const cache = await caches.open(CACHE_NAME);
+    await trimDynamicEntries(cache);
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener("fetch", (event) => {
@@ -48,7 +59,10 @@ self.addEventListener("fetch", (event) => {
       return fetch(request).then((response) => {
         if (response && response.ok && request.url.startsWith(self.location.origin)) {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          caches.open(CACHE_NAME).then(async (cache) => {
+            await cache.put(request, copy);
+            await trimDynamicEntries(cache);
+          });
         }
         return response;
       });

@@ -1,4 +1,4 @@
-import { memo, useContext, useEffect, useMemo, useState } from "react";
+import { memo, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { BgContext } from "../../../context/BgContext";
 import { lumToFg } from "../../../utils/color";
 import { optionChipStyle } from "../../../utils/stylePresets";
@@ -16,16 +16,27 @@ const Component = memo(({ focused, onFocus }) => {
     gap: 10,
   });
   const [phase, setPhase] = useState(0);
+  const rafRef = useRef(0);
+  const lastTsRef = useRef(0);
 
   const { lum } = useContext(BgContext);
   const fg = lumToFg(lum);
   const accent = lum > 0.5 ? "rgba(70,100,180,0.62)" : "rgba(185,210,255,0.62)";
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setPhase((v) => (v + p.speed * 0.02) % 1);
-    }, 16);
-    return () => clearInterval(id);
+    const step = (ts) => {
+      if (!lastTsRef.current) lastTsRef.current = ts;
+      const dt = ts - lastTsRef.current;
+      lastTsRef.current = ts;
+      setPhase((v) => (v + (dt / 1000) * p.speed * 1.2) % 1);
+      rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+      lastTsRef.current = 0;
+    };
   }, [p.speed]);
 
   const rowWidths = useMemo(() => {
