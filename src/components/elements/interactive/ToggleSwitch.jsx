@@ -22,9 +22,13 @@ const Component = memo(({ focused, onFocus }) => {
         transition: `all ${p.speed}s cubic-bezier(0.16, 1, 0.3, 1)`,
       }}>
         <div style={{
-          position: "absolute", top: p.thumbGap,
+          position: "absolute",
+          top: "50%",
+          transform: "translateY(-50%)",
           left: on ? p.width - ts - p.thumbGap : p.thumbGap,
-          width: ts, height: ts, borderRadius: p.radius - 1,
+          width: ts,
+          height: ts,
+          borderRadius: p.radius - 1,
           background: on ? accent : off,
           boxShadow: on ? `0 0 8px ${accent}` : "none",
           transition: `all ${p.speed}s cubic-bezier(0.16, 1, 0.3, 1)`,
